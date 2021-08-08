@@ -1,0 +1,179 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}结算-苹优购{% endblock title %}
+{% block head_title %}结算{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/015.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block index_slide %}
+    <section class="boxed-sm" style="padding-top: 30px">
+        <div class="container">
+            <div class="woocommerce">
+
+                <div class="row">
+                    <div class="woocommerce-checkout">
+                        {% csrf_token %}
+                        <div class="woocommerce-info-wrapper">
+                            <div class="row">
+                                <div class="woocommerce-info">
+                                    <div class="common_list_con clearfix">
+                                        <dl>
+                                            <dt><h3 class="common_title">确认收货地址</h3></dt>
+                                            <br>
+                                            {% if default_addr %}
+                                                <dd><input type="radio" name="addr_id" value="{{ default_addr.id }}"
+                                                           checked>{{ default_addr.addr }}（{{ default_addr.receiver }}
+                                                    收） {{ default_addr.phone }}</dd>
+                                                {% for addr in not_default_addrs %}
+                                                    <dd><input type="radio" name="addr_id" value="{{ addr.id }}"
+                                                               {% if addr.is_default %}checked{% endif %}>{{ addr.addr }}
+                                                        （{{ addr.receiver }} 收） {{ addr.phone }}</dd>
+                                                {% endfor %}
+                                            {% else %}
+                                                没有地址呢！请编辑下再来支付吧！
+                                            {% endif %}
+
+                                        </dl>
+                                        <a href="{% url 'user:address' %}" class="edit_site">编辑收货地址</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="woocommerce-checkout-review-order">
+                            <h4>订单详情</h4><br>
+                            <table class="woocommerce-checkout-review-order-table">
+                                <thead>
+                                <tr>
+                                    <th class="product-name">商品</th>
+                                    <th class="product-total">总价</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for sku in skus %}
+                                    <tr class="cart_item">
+                                        <td class="product-name">{{ sku.name }}
+                                            <span class="product-quantity">× {{ sku.count }}</span>
+                                        </td>
+                                        <td class="product-total">
+                          <span class="woocommerce-Price-amount amount">
+                            <span class="woocommerce-Price-currencySymbol">¥</span>{{ sku.amount }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr class="cart-subtotal">
+                                    <th>合计：{{ total_count }}件</th>
+                                    <td>
+                                        <strong>
+                            <span class="woocommerce-Price-amount amount">
+                              <span class="woocommerce-Price-currencySymbol">¥</span>{{ total_price }}</span>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="woocommerce-checkout-payment">
+                            <div class="payment_method_cheque">
+                                <div class="radio">
+                                    <label>
+                                        <input class="input-radio" id="payment_method_cheque" name="payment_method"
+                                               value="1" checked="checked" type="radio">货到付款
+                                        <div class="payment_box payment_method_cheque">
+                                            <p>确认收货地址、身份正确，即可到货付款</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="payment_method_paypal">
+                                <div class="radio">
+                                    <label>
+                                        <input class="input-radio" id="payment_method_paypal" name="payment_method"
+                                               value="2" type="radio">支付宝
+                                        <img src="../static/images/icons/paypal-group-icon.png" alt="paypal">
+                                        <a href="#">什么是支付宝？ </a>
+                                        <div class="payment_box payment_method_cheque">
+                                            <p>使用支付宝账号支付：确认您在支付宝中有余额</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-place-order">
+                                <noscript>Since your browser does not support JavaScript, or it is disabled, please
+                                    ensure you click the
+                                    <em>Update Totals</em> button before placing your order. You may be charged more
+                                    than the amount stated above if you fail to do so.
+                                    <br>
+                                    <input class="button alt" type="submit" name="woocommerce_checkout_update_totals"
+                                           value="付款">
+                                </noscript>
+                                <input id="woocommerce_checkout_place_order" class="place_order btn btn-brand pill"
+                                       name="woocommerce_checkout_place_order"
+                                       value="付款" data-value="Place order" type="submit" sku_ids={{ sku_ids }}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock index_slide %}
+{#================================#}
+{% block endfile %}
+    <script type="text/javascript">
+        function notifyAddToCart(productName) {
+            $.notify({
+                title: productName,
+                icon: 'lnr lnr-cart',
+                message: ""
+            }, {
+                type: 'success',
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOut'
+                },
+                placement: {
+                    from: "bottom",
+                    align: "right"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+            });
+        };
+        $('#woocommerce_checkout_place_order').click(function () {
+            // 获取用户选择的地址id, 支付方式, 要购买的商品id字符串
+            addr_id = $('input[name="addr_id"]:checked').val()
+            pay_method = $('input[name="payment_method"]:checked').val()
+            sku_ids = $(this).attr('sku_ids')
+            csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            // 组织参数
+            params = {
+                'addr_id': addr_id, 'pay_method': pay_method, 'sku_ids': sku_ids,
+                'csrfmiddlewaretoken': csrf
+            }
+            // 发起ajax post请求，访问/order/commit, 传递的参数: addr_id pay_method, sku_ids
+            $.post('/order/commit', params, function (data) {
+                if (data.res == 5) {
+                    // 创建成功
+                    localStorage.setItem('order_finish', 2);
+                    notifyAddToCart("订单创建成功！")
+                    setTimeout(function () {
+                        window.location.href = '/user/order/1';
+                    }, 3000)
+
+                } else {
+                    alert(data.errmsg)
+                }
+            })
+
+
+        });
+
+
+    </script>
+{% endblock endfile %}

@@ -1,0 +1,109 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}订单信息-用户中心-苹优购{% endblock title %}
+{% block head_title %}订单信息{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/03.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block context %}
+    <div class="woocommerce" style="margin-top: 20px">
+        {% for order in order_page %}
+            <form class="woocommerce-cart-form">
+                <table class="woocommerce-cart-table">
+                    <thead>
+                    <tr>
+                        <th class="product-thumbnail">商品</th>
+                        <th class="product-name"></th>
+                        <th class="product-weight">重量</th>
+                        <th class="product-quantity">数量</th>
+                        <th class="product-price">单价</th>
+                        <th class="product-subtotal">总价</th>
+                        <th class="product-comment">评价</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_sku in order.order_skus %}
+                        <tr>
+                            <td class="product-thumbnail">
+                                <img src="{{ order_sku.sku.image.url }}" alt="product-thumbnail" style="width: 100px">
+                            </td>
+                            <td class="product-name" data-title="Product">
+                                <a class="product-name" href="#">{{ order_sku.sku.name }}</a>
+                            </td>
+                            <td class="product-weight" data-title="Weight">{{ order_sku.sku.unite }}</td>
+                            <td class="product-quantity" data-title="Quantity">{{ order_sku.count }}</td>
+                            <td class="product-price" data-title="Price">¥{{ order_sku.price }}</td>
+                            <td class="product-subtotal" data-title="Total">¥{{ order_sku.amount }}</td>
+                            <td class="product-comment" data-title="Comment">
+                                <a href="{% url 'order:comment' order.order_id order_sku.sku.id %}" class="btn btn-brand-ghost pill">评价</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <div class="form-coupon organic-form">
+                                <div class="form-group">
+                                    <a class="btn btn-brand-ghost pill">{{ order.create_time }}</a>
+                                </div>
+                                <div class="form-group" style="margin-left: 30px">
+                                    <a class="btn btn-brand pill" href="#">订单编号：{{ order.order_id }}
+                                        | {{ order.status_name }}</a>
+                                </div>
+                                <div class="form-group update-cart">
+                                    <a class="btn btn-brand-ghost pill">总计：{{ order.total_price }}元</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </form>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <nav>
+                    <ul class="pagination pagination-style-1">
+                        {% if order_page.has_previous %}
+                            <li>
+                                <a class="prev page-numbers"
+                                   href="{% url 'user:order' order_page.previous_page_number %}">
+                                    <i class="fa fa-angle-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for pindex in pages %}
+                            {% if pindex != skus_page.number %}
+                                <li>
+                                    <a class="page-numbers"
+                                       href="{% url 'user:order' pindex %}">{{ pindex }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <span class="page-numbers current">{{ pindex }}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if order_page.has_next %}
+                            <li>
+                                <a class="next page-numbers"
+                                   href="{% url 'user:order' order_page.next_page_number %}">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock context %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock endfile %}
+
+

@@ -1,0 +1,223 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}商品详情-苹优购{% endblock title %}
+{% block head_title %}商品详情{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/01.jpg' %}" alt="">
+{% endblock head_img %}
+{% block page_class %}shop-detail-1 woocommerce{% endblock page_class %}
+{#================================#}
+{% block index_slide %}
+    <section class="boxed-sm">
+        <div class="container">
+            <div class="row product-detail">
+                <div class="row main">
+                    <div class="col-md-6">
+                        <div class="woocommerce-product-gallery">
+                            <div class="main-carousel">
+                                <div class="item">
+                                    <img class="img-responsive" src="{{ sku.image.url }}"
+                                         alt="product thumbnail">
+                                </div>
+                                {% if goods_img %}
+                                    {% for img in goods_img %}
+                                        <div class="item">
+                                            <img class="img-responsive" src="{{ img.image.url }}"
+                                                 alt="product thumbnail">
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="thumbnail-carousel">
+                                <div class="item">
+                                    <img class="img-responsive" src="{{ sku.image.url }}"
+                                         alt="product thumbnail">
+                                </div>
+                                {% if goods_img %}
+                                    {% for img in goods_img %}
+                                        <div class="item">
+                                            <img class="img-responsive" src="{{ img.image.url }}"
+                                                 alt="product thumbnail">
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="summary">
+                            <div class="desc">
+                                <div class="header-desc">
+                                    <h2 class="product-title">{{ sku.name }}</h2>
+                                    <p class="price">单价：¥<em>{{ sku.price }}/每{{ sku.unite }}</em></p>
+                                    <p class="total">总价：¥<em>{{ sku.price }}</em></p>
+                                </div>
+                                <div class="body-desc">
+                                    <div class="woocommerce-product-details-short-description">
+                                        <p>{{ sku.desc }}</p>
+                                    </div>
+                                </div>
+                                <div class="footer-desc">
+                                    <form class="cart">
+                                        {% csrf_token %}
+                                        <div class="quantity buttons-added" style="padding-left: 60px">
+                                            <input class="minus" value="-" type="button">
+                                            <input class="input-text qty text" step="1" min="1" max="" name="quantity"
+                                                   value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric"
+                                                   type="number">
+                                            <input class="plus" value="+" type="button">
+                                        </div>
+                                        <div class="js-action-add-cart btn btn-brand no-radius" sku_id = {{ sku.id }}>加入购物车</div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-meta">
+                                <p class="posted-in">所属种类:
+                                    <a href="{% url 'goods:list' sku.type.id 1 %}" rel="tag">{{ sku.type }}</a>
+                                </p>
+                                <p class="id">商品编号:
+                                    <a href="{%  url "goods:detail"  sku.id %}">{{ sku.id }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="woocommerce-tabs">
+                <div class="row" style="padding-top:20px;">
+                    <div class="col-md-6">
+                        <div class="tab-content tab-content-style-1">
+                            <div class="tab-pane fade in active" id="Description" role="tabpanel">
+                                <h3 class="title-tab">商品描述</h3>
+                                <ul class="arrow">
+                                    {{ sku.goods.detail|safe }}
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="Additional-Information" role="tabpanel">
+                                <h3 class="title-tab">成熟度预测</h3>
+                                <table class="shop_attributes table table-striped table-bordered">
+                                    等待后续添加
+                                    <tbody>
+                                    <tr>
+                                        <th>Country</th>
+                                        <td>
+                                            <p>England, London</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Weight</th>
+                                        <td>
+                                            <p>3.5 Kg</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Next Day Delivery Available</th>
+                                        <td>
+                                            <p>Yes</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="Review" role="tabpanel">
+                                <h3 class="title-tab">共有{{ sku_orders.len }}条关于{{ sku.name }}的评价</h3>
+                                <ol class="comment-list">
+                                    {% for sku_order in sku_orders %}
+                                        <li>
+                                            <div class="the-comment">
+
+                                                <div class="comment-box">
+                                                    <div class="comment-author meta">
+                                                        <p class="author">{{ sku_order.order.user.username }}</p>
+                                                        <p class="time">{{ sku_order.order.create_time }}</p>
+                                                        <p class="comment-text">{{ sku_order.comment }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="tabs tab-style-1" role="tablist">
+                            <li class="active" role="presentation">
+                                <a href="#Description" aria-controls="Description" role="tab" data-toggle="tab">商品详情
+                                    <i class="more-less fa fa-angle-down"></i>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#Additional-Information" aria-controls="Additional-Information" role="tab"
+                                   data-toggle="tab">成熟度预测
+                                    <i class="more-less fa fa-angle-down"></i>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#Review" aria-controls="Review" role="tab" data-toggle="tab">评价 ({{ sku_orders.len }})
+                                    <i class="more-less fa fa-angle-down"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="relate-product">
+                <div class="heading-wrapper text-center">
+                    <h3 class="heading">新品推荐</h3>
+                </div>
+                <div class="row">
+                    <div class="carousel-product">
+                        {% for new_sku in new_skus %}
+                            <div class="item">
+                                <figure class="item">
+                                    <div class="product product-style-1">
+                                        <div class="img-wrapper">
+                                            <a href="{% url 'goods:detail' new_sku.id %}">
+                                                <img class="img-responsive" src="../media/{{ new_sku.image.name }}"
+                                                     alt="product thumbnail">
+                                            </a>
+                                            <div class="product-control-wrapper bottom-right">
+                                                <div class="wrapper-control-item item-add-cart js-action-add-cart" sku_id="{{ new_sku.id }}">
+                                                    <a class="animate-icon-cart" href="#">
+                                                        <span class="lnr lnr-cart"></span>
+                                                    </a>
+                                                    <svg x="0px" y="0px" width="36px" height="32px" viewbox="0 0 36 32">
+                                                        <path stroke-dasharray="19.79 19.79" fill="none" ,=","
+                                                              stroke-width="2" stroke-linecap="square"
+                                                              stroke-miterlimit="10"
+                                                              d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <figcaption class="desc text-center">
+                                            <h3>
+                                                <a class="product-name" href="#">{{ new_sku.name }}</a>
+                                            </h3>
+                                            <span class="price">¥{{ new_sku.price }}</span>
+                                        </figcaption>
+                                    </div>
+                                </figure>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock index_slide %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/config-mm-menu.js' %}"></script>
+    <script src="{% static 'js/config-carousel.js' %}"></script>
+    <script src="{% static 'js/config-carousel-thumbnail.js' %}"></script>
+    <script src="{% static 'js/config-carousel-product-quickview.js' %}"></script>
+    <script src="{% static 'js/demo-add-to-cart.js' %}"></script>
+    <!-- Demo Only-->
+{% endblock endfile %}
+
+

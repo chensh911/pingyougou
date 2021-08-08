@@ -1,0 +1,15 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{#====================#}
+{% block sub-head %}
+    <section class="sub-header shop-detail-1">
+        {% block head_img %}
+            <img class="rellax bg-overlay" src="{% static 'images/sub-header/015.jpg' %}" alt="">
+        {% endblock head_img %}
+        <div class="overlay-call-to-action"></div>
+        <h3 class="heading-style-3">
+            {% block head_title %}用户注册{% endblock head_title %}
+        </h3>
+
+    </section>
+{% endblock sub-head %}

@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+          rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
+</head>
+<body class="animsition">
+<div class="{% block page_class %}{% endblock page_class %}" id="page">
+    <nav id="menu">
+        <ul>
+            <li><a href="{% url 'goods:index' %}">首页</a></li>
+            <li><a href="{% url 'user:user' %} ">个人中心</a>
+            <li>
+            <li><a href="{% url 'user:address' %}">地址管理</a></li>
+            <li><a href="{% url 'user:order' 1 %}">订单管理</a></li>
+            <li><a href="{% url 'cart:show' %}">购物车</a></li>
+        </ul>
+    </nav>
+    <header class="header-style-1 static">
+        <div class="container">
+            <div class="row">
+                <div class="header-1-inner">
+                    <a class="brand-logo animsition-link" href="{% url 'goods:index' %}">
+                        <img class="img-responsive" src="{% static 'images/logo.png' %}" alt=""/>
+                    </a>
+                    <nav>
+                        <ul class="menu hidden-xs">
+                            <li><a href="{% url 'goods:index' %}">首页</a></li>
+                            <li><a href="{% url 'user:user' %} ">个人中心</a><li>
+                            <li><a href="{% url 'user:address' %}">地址管理</a></li>
+                            <li><a href="{% url 'user:order' 1 %}">订单管理</a></li>
+                            <li><a href="{% url 'cart:show' %}">购物车</a></li>
+                        </ul>
+                    </nav>
+                    <aside class="right">
+                        <div class="widget widget-control-header">
+                            {% if user.is_authenticated %}
+                                <div class="login_btn fl">
+                                    欢迎您：<em>{{ user.username }}</em>
+                                    <a href="{% url 'user:logout' %}">退出</a>
+                                </div>
+                            {% else %}
+                                <div class="login_btn fl">
+                                    <a href="{% url 'user:login' %}">登录</a>
+                                    <span>|</span>
+                                    <a href="{% url 'user:register' %}">注册</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="widget widget-control-header widget-search-header">
+                            <a class="control btn-open-search-form js-open-search-form-header" href="#">
+                                <span class="lnr lnr-magnifier"></span>
+                            </a>
+                            <div class="form-outer">
+                                <button class="btn-close-form-search-header js-close-search-form-header">
+                                    <span class="lnr lnr-cross"></span>
+                                </button>
+                                <form>
+                                    <input placeholder="Search"/>
+                                    <button class="search">
+                                        <span class="lnr lnr-magnifier"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="widget widget-control-header hidden-lg hidden-md hidden-sm">
+                            <a class="navbar-toggle js-offcanvas-has-events" type="button" href="#menu">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block sub-head %}
+    {% endblock sub-head %}
+    {% block index_slide %}{% endblock index_slide %}
+</div>
+{% block out_body %}
+{% endblock out_body %}
+{% block not_index %}
+    <section class="boxed-sm">
+        <div class="container">
+            {% block context %} {% endblock context %}
+        </div>
+    </section>
+{% endblock not_index %}
+<footer class="footer-style-1">
+    <div class="container">
+        <div class="row">
+            <div class="footer-style-1-inner">
+                <div class="widget-footer widget-text col-first col-small">
+                    <a href="#">
+                        <img class="logo-footer" src="{% static 'images/logo.png' %}" alt="Logo Organic"
+                             style="width: 100%"/>
+                    </a>
+                    <div class="widget-link">
+                        <ul>
+                            <li>
+                                <span class="lnr lnr-map-marker icon"></span>
+                                <span>379 5th Ave New York, NYC 10018</span>
+                            </li>
+                            <li>
+                                <span class="lnr lnr-phone-handset icon"></span>
+                                <a href="tel:0123456789">(+1) 96 716 6879</a>
+                            </li>
+                            <li>
+                                <span class="lnr lnr-envelope icon"></span>
+                                <a href="mailto: contact@site.com">contact@site.com </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-footer widget-link col-second col-medium">
+                    <div class="list-link">
+                        <h4 class="h4 heading">SHOP</h4>
+                        <ul>
+                            <li>
+                                <a href="#">Food</a>
+                            </li>
+                            <li>
+                                <a href="#">Farm</a>
+                            </li>
+                            <li>
+                                <a href="#">Health</a>
+                            </li>
+                            <li>
+                                <a href="#">Organic</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list-link">
+                        <h4 class="h4 heading">SUPPORT</h4>
+                        <ul>
+                            <li>
+                                <a href="#">Contact Us</a>
+                            </li>
+                            <li>
+                                <a href="#">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="#">Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a href="#">Blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list-link">
+                        <h4 class="h4 heading">MY ACCOUNT</h4>
+                        <ul>
+                            <li>
+                                <a href="#">Sign In</a>
+                            </li>
+                            <li>
+                                <a href="#">My Cart</a>
+                            </li>
+                            <li>
+                                <a href="#">My Wishlist</a>
+                            </li>
+                            <li>
+                                <a href="#">Check Out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-footer widget-newsletter-footer col-last col-small">
+                    <h4 class="h4 heading">NEWSLETTER</h4>
+                    <p>Subscribe now to get daily updates</p>
+                    <form class="organic-form form-inline btn-add-on circle border">
+                        <div class="form-group">
+                            <input class="form-control pill transparent" placeholder="Your Email..." type="email"/>
+                            <button class="btn btn-brand circle" type="submit">
+                                <i class="fa fa-envelope-o"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copy-right style-1">
+        <div class="container">
+            <div class="row">
+                <div class="copy-right-inner">
+                    <p>Copyright © 2021 Designed by 苹优购. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% block fade %}{% endblock fade %}
+<script src="{% static 'js/library/jquery.min.js' %}"></script>
+<script src="{% static 'js/library/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/function-check-viewport.js' %}"></script>
+<script src="{% static 'js/library/slick.min.js' %}"></script>
+<script src="{% static 'js/library/select2.full.min.js' %}"></script>
+<script src="{% static 'js/library/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'js/library/jquery.mmenu.all.min.js' %}"></script>
+<script src="{% static 'js/library/rellax.min.js' %}"></script>
+<script src="{% static 'js/library/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'js/library/bootstrap-notify.min.js' %}"></script>
+<script src="{% static 'js/library/bootstrap-slider.js' %}"></script>
+<script src="{% static 'js/library/in-view.min.js' %}"></script>
+<script src="{% static 'js/library/countUp.js' %}"></script>
+<script src="{% static 'js/library/animsition.min.js' %}"></script>
+<script src="{% static 'js/global.js' %}"></script>
+<script src="{% static 'js/config-mm-menu.js' %}"></script>
+
+{% block endfile %}
+{% endblock endfile %}
+</body>
+</html>
+

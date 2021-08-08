@@ -1,0 +1,126 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}商品列表-苹优购{% endblock title %}
+{% block head_title %}商品列表{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/01.jpg' %}" alt="">
+{% endblock head_img %}
+{% block page_class %}shop-detail-1 woocommerce{% endblock page_class %}
+{#================================#}
+{% block index_slide %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'goods:index' %}">首页</a></li>
+        <li><a href="{% url 'goods:list' type.id 1 %}?sort={{ sort }}">{{ type.name }}</a></li>
+        <li class="active">{{ sort }}查询</li>
+    </ol>
+    <div class="woocommerce-top-control wrapper">
+        <section class="boxed-sm">
+            <div class="container">
+                <div class="row">
+                    <div class="woocommerce-top-control">
+                        <p class="woocommerce-result-count">共找到{{ count }}条结果</p>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                分类查询
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {% for type in types %}
+                                    <li><a href="{% url 'goods:list' type.id 1 %}?sort={{ sort }}">{{ type.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                条件查询
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="{% url 'goods:list' type.id 1 %}?sort=默认">默认查询</a></li>
+                                <li><a href="{% url 'goods:list' type.id 1 %}?sort=价格">按价格查询</a></li>
+                                <li><a href="{% url 'goods:list' type.id 1 %}?sort=成熟度">按成熟度查询</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <section class="box-sm">
+        <div class="container">
+            <div class="row main">
+                <div class="row product-grid-equal-height-wrapper product-equal-height-4-columns flex multi-row">
+                    {% for sku in skus_page %}
+                        <figure class="item">
+                            <div class="product product-style-1">
+                                <div class="img-wrapper">
+                                    <a href="{% url 'goods:detail' sku.id %}">
+                                        <img class="img-responsive" src="{{ sku.image.url }}" alt="product thumbnail"/>
+                                    </a>
+
+                                </div>
+                                <figcaption class="desc text-center">
+                                    <h3>
+                                        <a class="product-name" href="{% url 'goods:detail' sku.id %}">{{ sku.name }}</a>
+                                    </h3>
+                                    <span class="price">¥{{ sku.price }}</span>
+                                </figcaption>
+                            </div>
+                        </figure>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <nav>
+                            <ul class="pagination pagination-style-1">
+                                {% if skus_page.has_previous %}
+                                    <li>
+                                        <a class="prev page-numbers"
+                                           href="{% url 'goods:list' type.id skus_page.previous_page_number %}?sort={{ sort }}">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% for pindex in pages %}
+                                    {% if pindex != skus_page.number %}
+                                    <li>
+                                        <a class="page-numbers" href="{% url 'goods:list' type.id pindex %}?sort={{ sort }}">{{ pindex }}</a>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <span class="page-numbers current">{{ pindex }}</span>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if skus_page.has_next %}
+                                    <li>
+                                        <a class="next page-numbers"
+                                           href="{% url 'goods:list' type.id skus_page.next_page_number %}?sort={{ sort }}">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock index_slide %}
+
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/config-mm-menu.js' %}"></script>
+    <script src="{% static 'js/config-carousel.js' %}"></script>
+    <script src="{% static 'js/config-carousel-thumbnail.js' %}"></script>
+    <script src="{% static 'js/config-carousel-product-quickview.js' %}"></script>
+    <!-- Demo Only-->
+    <script src="{% static 'js/demo-add-to-cart.js' %}"></script>
+{% endblock endfile %}
+
+

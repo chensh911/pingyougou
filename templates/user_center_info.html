@@ -1,0 +1,87 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}用户信息-用户中心-苹优购{% endblock title %}
+{% block head_title %}用户信息{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/03.jpg' %}" alt="">
+{% endblock head_img %}
+{% block page_class %}shop-detail-1 woocommerce{% endblock page_class %}
+{#================================#}
+{% block context %}
+    <div class="woocommerce" style="margin: 30px 0 30px 0">
+        <div class="container">
+            <div class="heading-wrapper text-center">
+                <h3 class="heading">个人资料</h3>
+            </div>
+            <table class="table table-hover">
+                <tr>
+                    <td>用户名</td>
+                    <td>{{ user.username }}</td>
+                </tr>
+                {% if address %}
+                    <tr>
+                        <td>电话</td>
+                        <td>{{ address.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>收件名</td>
+                        <td>{{ address.receiver }}</td>
+                    </tr>
+                    <tr>
+                        <td>地址</td>
+                        <td>{{ address.addr }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+        <div class="container">
+            <div class="relate-product">
+                <div class="heading-wrapper text-center">
+                    <h3 class="heading">最近浏览</h3>
+                </div>
+                <div class="row">
+                    <div class="carousel-product slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <div class="slick-track"
+                                 style="opacity: 1; width: 2640px; transform: translate3d(0px, 0px, 0px); height: 300px">
+                                {% for good in goods_li %}
+                                    <div class="item slick-slide slick-active" tabindex="0" style="width: 200px;">
+                                        <figure class="item">
+                                            <div class="product product-style-1">
+                                                <div class="img-wrapper">
+                                                    <a href="{% url "goods:detail" good.id %}" tabindex="0">
+                                                        <img class="img-responsive"
+                                                             src="../media/{{ good.image.name }}"
+                                                             alt="product thumbnail">
+                                                    </a>
+                                                </div>
+                                                <figcaption class="desc text-center">
+                                                    <h3>
+                                                        <a class="product-name" href="{% url "goods:detail" good.id %}"
+                                                           tabindex="0">{{ good.name }}</a>
+                                                    </h3>
+                                                    <span class="price">¥{{ good.price }}/每{{ good.unite }}</span>
+                                                </figcaption>
+                                            </div>
+                                        </figure>
+                                    </div>
+                                {% empty %}
+                                    无历史记录哦！
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock context %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/register.js' %}"></script>
+    <!-- Demo Only-->
+{% endblock endfile %}
+
+

@@ -1,0 +1,87 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}用户注册-苹优购{% endblock title %}
+{% block head_title %}用户注册{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/015.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block context %}
+    <div class="woocommerce" style="margin: 30px 0 30px 0">
+        <div class="woocommerce-info-wrapper">
+            <div class="row">
+                <div class="woocommerce-info">
+                    <i class="fa fa-check"></i>已有账号？
+                    <a href="login">点击登录</a>
+                </div>
+            </div>
+            {% if errmsg == '用户名已存在' %}
+                <div class="row">
+                    <div class="woocommerce-info">
+                        <i class="fa fa-info-circle"></i>{{ errmsg }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <form id="reg_form" class="woocommerce-checkout" method="post" action="register">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group organic-form no-radius">
+                            <label>用户名 *</label>&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                     style="display: none; color: red"></i>
+                            <input class="form-control" type="text" name="username" id="username">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group organic-form no-radius">
+                            <label>邮箱 *</label>
+                            <input class="form-control" type="email" name="email" id="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group organic-form no-radius">
+                            <label>密码 *</label>&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                    style="display: none; color: red"></i>
+                            <input class="form-control" type="password" name="password" id="password">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group organic-form no-radius">
+                            <label>确认密码 *</label>&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                      style="display: none; color: red"></i>
+                            <input class="form-control" type="password" name="re-password" id="re-password">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="woocommerce-account-fields">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="allow" id="allow"> 同意"苹优购"用户协议
+                                    &nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle" style="color: red">请勾选同意</i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-place-order">
+                    <input class="place_order btn btn-brand pill" name="woocommerce_checkout_place_order"
+                           value="注册" data-value="Place order" type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock context %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock endfile %}
+
+

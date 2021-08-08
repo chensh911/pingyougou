@@ -1,0 +1,70 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}用户登录-苹优购{% endblock title %}
+{% block head_title %}用户登录{% endblock head_title %}
+{% block head_img %}
+<img class="rellax bg-overlay" src="{% static 'images/sub-header/02.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block context %}
+<div class="woocommerce marginTB30" style="margin: 30px 0 30px 0">
+    <div class="woocommerce-info-wrapper">
+        <div class="row">
+            <div class="woocommerce-info">
+                <i class="fa fa-check"></i>没有账号？
+                <a href="register">点击注册</a>
+            </div>
+        </div>
+        {% if errmsg == '用户名或密码错误' or errmsg == '账户未激活' %}
+        <div class="row">
+            <div class="woocommerce-info">
+                <i class="fa fa-info-circle"></i>{{ errmsg }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <form id="reg_form" class="woocommerce-checkout" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group organic-form no-radius">
+                        <label>用户名 *</label>&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                 style="display: none; color: red"></i>
+                        <input class="form-control" type="text" name="username" id="username" value="{{ username }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group organic-form no-radius">
+                        <label>密码 *</label>&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                style="display: none; color: red"></i>
+                        <input class="form-control" type="password" name="password">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="woocommerce-account-fields">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="remember" id="remember" {{ checked }}> 记住用户名
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-place-order">
+                <input class="place_order btn btn-brand pill" name="woocommerce_checkout_place_order"
+                       value="登录" data-value="登录" type="submit">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock context %}
+{#================================#}
+{% block endfile %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock endfile %}

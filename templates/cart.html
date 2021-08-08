@@ -1,0 +1,78 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}购物车-苹优购{% endblock title %}
+{% block head_title %}购物车{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/013.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block index_slide %}
+    <section class="boxed-sm" style="padding: 30px 0 30px 0">
+        <div class="container">
+            <div class="woocommerce">
+                <form class="woocommerce-cart-form" method="post" action="{% url 'order:place' %}">
+                {% csrf_token %}
+                    <table class="woocommerce-cart-table">
+                        <thead>
+                        <tr>
+                            <th class="product-thumbnail">商品</th>
+                            <th class="product-name"></th>
+                            <th class="product-weight">单位</th>
+                            <th class="product-quantity">数量</th>
+                            <th class="product-price">价格</th>
+                            <th class="product-subtotal">总计</th>
+                            <th class="product-remove"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for sku in skus %}
+                            <tr class="cart-item">
+                                <td class="product-thumbnail">
+                                    <img src="{{ sku.image.url }}" alt="product-thumbnail" style="width: 100px">
+                                </td>
+                                <td class="product-name" data-title="Product">
+                                    <a class="product-name" href="{%  url 'goods:detail' sku.id %}">{{ sku.name }}</a>
+                                </td>
+                                <td class="product-weight" data-title="Weight">{{ sku.unite }}</td>
+
+                                <td class="product-quantity" data-title="Quantity">
+                                    <input class="qty" step="1" min="0" max="" name="product-name"
+                                           value="{{ sku.count }}" title="Qty"
+                                           size="4" pattern="[0-9]*" inputmode="numeric" type="number" sku_id={{ sku.id }}>
+                                </td>
+                                <td class="product-price" data-title="Price">¥<em>{{ sku.price }}</em></td>
+                                <td class="product-subtotal" data-title="Total">¥<em>{{ sku.amount }}</em></td>
+                                <td class="product-remove">
+                                    <a sku_id={{ sku.id }} class="remove" href="#" aria-label="Remove this item">×</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <div class="form-coupon organic-form">
+                                    <div class="form-group">
+                                        <a id="total_count" class="btn btn-brand-ghost pill">共<em>{{ total_count }}</em>件</a>
+                                    </div>
+                                    <div class="form-group" style="margin-left: 30px">
+                                        <a id="total_price" class="btn btn-brand pill" href="#">总计：¥<em>{{ total_price }}</em></a>
+                                    </div>
+                                    <div class="form-group update-cart">
+                                        <input type="submit" value="去结算" class="btn btn-brand-ghost pill">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock index_slide %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/cart.js' %}"></script>
+{% endblock endfile %}

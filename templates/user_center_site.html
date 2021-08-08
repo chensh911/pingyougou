@@ -1,0 +1,93 @@
+﻿{% extends 'base_with_head.html' %}
+{% load static %}
+{#================================#}
+{% block title %}地址信息-用户中心-苹优购{% endblock title %}
+{% block head_title %}地址信息{% endblock head_title %}
+{% block head_img %}
+    <img class="rellax bg-overlay" src="{% static 'images/sub-header/03.jpg' %}" alt="">
+{% endblock head_img %}
+{#================================#}
+{% block context %}
+    <div class="woocommerce" style="margin: 30px 0 30px 0">
+        <div class="container">
+            <div class="heading-wrapper text-center">
+                <h3 class="heading">收货地址</h3>
+            </div>
+            <div class="site_con">
+                <table class="table table-hover">
+                    {% if d_address %}
+                        <tr>
+                            <td>[默认地址]</td>
+                            <td><label>{{ d_address.addr }} （{{ d_address.receiver }} 收）{{ d_address.phone }}</label>
+                            </td>
+                        </tr>
+                        {% for address in nd_address %}
+                            <tr>
+                                <td>[其他地址]</td>
+                                <td><label>{{ address.addr }} （{{ address.receiver }}
+                                    收） {{ address.phone }}</label></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                        <td>无默认地址</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="container">
+                <div class="relate-product">
+                    <div class="heading-wrapper text-center">
+                        <h3 class="heading">新增地址</h3>
+                    </div>
+
+                    <div class="woocommerce">
+                        <form method="post" class="form-horizontal">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">收件人：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="receiver" name="receiver">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">详细地址：</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="addr" name="addr"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">邮编：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="zip_code" name="zip_code">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="phone" name="phone">
+                                </div>
+                            </div>
+                            <input type="hidden" id="addr_id" name="addr_id" value="0">
+                            <input type="hidden" id="type" name="type" value="change">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                    <input type="submit" value="提交" class="btn btn-default">
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock context %}
+{#================================#}
+{% block endfile %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock endfile %}
+
+
